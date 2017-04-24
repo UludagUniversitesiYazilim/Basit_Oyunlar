@@ -5,19 +5,19 @@ import time
 
 def main():
     pygame.init()
-    game_board = pygame.display.set_mode([1024, 768], pygame.HWSURFACE)
+    game_board = pygame.display.set_mode([550, 550], pygame.HWSURFACE | pygame.SWSURFACE | pygame.NOFRAME)
     exit_game = False
     clock = pygame.time.Clock()
     foo = 0
     kdowned = "d"
-    snake = Snake.Snake()
+    snake = Snake.CSnake()
     time1 = time.time()
 
     while not exit_game:
-        time2 = time.time()
+        time2 = 0
         if time2 - time1 > 1:
             print(foo)
-            break
+            exit_game = True
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 exit_game = True
@@ -25,33 +25,31 @@ def main():
             if e.type == pygame.KEYDOWN:
                 kdowned = e.unicode
 
-        if kdowned == "w":
-            snake.set_direction(0,-1)
-        elif kdowned == "s":
-            snake.set_direction(0, 1)
-        if kdowned == "a":
-            snake.set_direction(-1, 0)
-        elif kdowned == "d":
-            snake.set_direction(1, 0)
-
-
-        game_board.fill((255, 255, 255))
-        for i in snake.get_coordinates:
-            pygame.draw.rect(game_board, (0, 123, 0), (i[0]*20, i[1]*20, 20, 20))
-
-        snake.move_snake()
-        pygame.display.update()
-
-
         if snake.get_speed < 40:
+            if kdowned == "w":
+                snake.set_direction(0, -1)
+            elif kdowned == "s":
+                snake.set_direction(0, 1)
+            if kdowned == "a":
+                snake.set_direction(-1, 0)
+            elif kdowned == "d":
+                snake.set_direction(1, 0)
+
+            game_board.fill((255, 255, 255))
+            for i in snake.get_coordinates:
+                pygame.draw.rect(game_board, (0, 123, 0), (i[0] * 10, i[1] * 10, 10, 10))
+
+            pygame.draw.ellipse(game_board, (255, 0, 0),
+                                (snake.get_apple.coords[0] * 10, snake.get_apple.coords[1] * 10, 10, 10))
+
+            if snake.move_snake() == -1:
+                exit_game = True
+            pygame.display.update()
             clock.tick(snake.get_speed)
         else:
-            break
+            exit_game = True
 
         foo += 1
-        if foo%5 == 0:
-            snake.eat()
-
 
     pygame.quit()
     quit()
