@@ -1,5 +1,5 @@
 import pygame
-import Snake
+import CSnake
 import time
 
 
@@ -9,8 +9,8 @@ def main():
     exit_game = False
     clock = pygame.time.Clock()
     foo = 0
-    kdowned = "d"
-    snake = Snake.CSnake()
+    key_downed = "d"
+    snake = CSnake.Snake()
     time1 = time.time()
 
     while not exit_game:
@@ -23,16 +23,16 @@ def main():
                 exit_game = True
 
             if e.type == pygame.KEYDOWN:
-                kdowned = e.unicode
+                key_downed = e.unicode
 
         if snake.get_speed < 40:
-            if kdowned == "w":
+            if key_downed == "w":
                 snake.set_direction(0, -1)
-            elif kdowned == "s":
+            elif key_downed == "s":
                 snake.set_direction(0, 1)
-            if kdowned == "a":
+            if key_downed == "a":
                 snake.set_direction(-1, 0)
-            elif kdowned == "d":
+            elif key_downed == "d":
                 snake.set_direction(1, 0)
 
             game_board.fill((255, 255, 255))

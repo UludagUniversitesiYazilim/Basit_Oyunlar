@@ -1,6 +1,6 @@
 import Apple
 
-class CSnake(object):
+class Snake(object):
     __speed = 3
     __direction = (0, 0)
     __tail_coords = [[1, 0], [0, 0]]
