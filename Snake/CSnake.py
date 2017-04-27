@@ -1,4 +1,5 @@
-import Apple
+from Snake import Apple
+
 
 class Snake(object):
     __speed = 3
@@ -6,7 +7,7 @@ class Snake(object):
     __tail_coords = [[1, 0], [0, 0]]
 
     def __init__(self):
-        self.new_apple()
+        self.apple = self.new_apple()
 
     @property
     def get_speed(self):
@@ -39,15 +40,11 @@ class Snake(object):
 
         length = len(self.__tail_coords)
 
-        self.__tail_coords[0][0] = x + self.__tail_coords[0][0]
-        self.__tail_coords[0][1] = y + self.__tail_coords[0][1]
+        self.__tail_coords[0][0] = (x + self.__tail_coords[0][0]) % 55
+        self.__tail_coords[0][1] = (y + self.__tail_coords[0][1]) % 55
 
         if self.check_crash():
             return -1
-
-        if self.find_apple():
-            self.eat()
-            self.new_apple()
 
         foo = 1
         while foo < length:
@@ -56,17 +53,19 @@ class Snake(object):
             temp = temp2
             foo += 1
 
+        if self.find_apple():
+            self.eat()
+            self.apple = self.new_apple()
 
-
-    def eat(self): # TODO: Duzelt
+    def eat(self):  # TODO: Duzelt
         t = self.__tail_coords
         self.set_speed(1)
         if self.get_direction == (1, 0):
-            t.append([(t[-1][0]-1),(t[-1][1])])
+            t.append([(t[-1][0] - 1), (t[-1][1])])
         elif self.get_direction == (-1, 0):
             t.append([(t[-1][0] + 1), (t[-1][1])])
         elif self.get_direction == (0, 1):
-            t.append([(t[-1][0]), (t[-1][1]-1)])
+            t.append([(t[-1][0]), (t[-1][1] - 1)])
         elif self.get_direction == (0, -1):
             t.append([(t[-1][0]), (t[-1][1] + 1)])
 
@@ -78,8 +77,9 @@ class Snake(object):
         else:
             return False
 
-    def new_apple(self):
-        self.apple = Apple.Apple()
+    @staticmethod
+    def new_apple():
+        return Apple.Apple()
 
     def check_crash(self):
         head = self.__tail_coords[0]
