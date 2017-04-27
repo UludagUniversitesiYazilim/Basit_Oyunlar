@@ -1,13 +1,25 @@
 from Snake import Apple
+import time
 
 
 class Snake(object):
-    __speed = 3
-    __direction = (0, 0)
-    __tail_coords = [[1, 0], [0, 0]]
 
     def __init__(self):
-        self.apple = self.new_apple()
+        self.__speed = 3
+        self.__direction = (0, 0)
+        self.__tail_coords = [[1, 0], [0, 0]]
+        self.__apple = self.new_apple()
+        self.__score = 0
+
+        self.start_time = time.time()
+
+
+    def set_score(self, point):
+        self.__score += point
+
+    @property
+    def get_score(self):
+        return self.__score
 
     @property
     def get_speed(self):
@@ -29,7 +41,7 @@ class Snake(object):
 
     @property
     def get_apple(self):
-        return self.apple
+        return self.__apple
 
     def move_snake(self):
         # [[2,3], [2,4], [2,5]]
@@ -55,7 +67,14 @@ class Snake(object):
 
         if self.find_apple():
             self.eat()
-            self.apple = self.new_apple()
+            self.__apple = self.new_apple()
+            self.calculate_score()
+
+    def calculate_score(self):
+        eat_time = time.time()
+        add_score = int(1/(eat_time - self.start_time) * 100)
+        self.set_score(add_score)
+        self.start_time = eat_time
 
     def eat(self):  # TODO: Duzelt
         t = self.__tail_coords

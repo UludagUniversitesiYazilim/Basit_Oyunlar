@@ -24,7 +24,7 @@ def main():
         time2 = time.time()
 
         if time2 - time1 > 1:
-            pygame.display.set_caption(str(bar) + " Saniye - " + str(foo) + " FPS")
+            pygame.display.set_caption(str(bar) + " Saniye - " + " Score: " + str(snake.get_score))
             foo = 0
             bar += 1
             time1 = time2
@@ -67,6 +67,7 @@ def main():
 
         foo += 1
 
+    pygame.time.wait(2000)
     pygame.quit()
     quit()
 
